@@ -7,7 +7,7 @@ interface Props {
 }
 const ChatList: React.FC<Props> = ({inbox}) => {
   return (
-    <div>
+    <div className="col-8 mx-auto">
       {inbox.map((message) => (
         <ChatItem inbox={message} key={message._id}/>
       ))}

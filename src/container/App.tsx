@@ -3,39 +3,46 @@ import ChatForm from '../components/ChatForm/ChatForm';
 import {useEffect, useState} from 'react';
 import {GetMessage} from '../types';
 
-const url = 'http://146.185.154.90:8000/messages';
+let url = 'http://146.185.154.90:8000/messages';
 const App = () => {
   const [messages, setMessages] = useState<GetMessage[]>([
     {
-      message: "Hello, world!",
-      author: "Admin",
-      datetime: "2017-12-21T10:20:39.586Z",
-      _id: "5a3b8af7b96eb02c84d640bd"
+      message: "",
+      author: "",
+      datetime: "",
+      _id: ""
     }
   ]);
   
+  const dateTime: string | null = null;
   
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(url);
-      
-      if (response.ok) {
-        const messages: GetMessage[] = await response.json();
-        const newMessage = messages.map((message) => ({
-          ...message,
-        }));
-        setMessages(newMessage);
-      }
-    };
+    if (dateTime !== null) {
+      url += '?datetime=' + dateTime;
+    }
     
-    void fetchData();
+    setInterval(() => {
+      const fetchData = async () => {
+        const response = await fetch(url);
+        
+        if (response.ok) {
+          const messages: GetMessage[] = await response.json();
+          const newMessage = messages.map((message) => ({
+            ...message,
+          }));
+          setMessages(newMessage);
+          console.log('after 2 seconds');
+        }
+      };
+      void fetchData();
+      }, 2000);
   }, []);
   
   return (
-    <>
-      <ChatList inbox={messages}/>
+    <div className="container">
       <ChatForm/>
-    </>
+      <ChatList inbox={messages}/>
+    </div>
   );
 };
 
