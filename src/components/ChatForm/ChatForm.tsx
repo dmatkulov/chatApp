@@ -9,7 +9,6 @@ const ChatForm: React.FC = () => {
     _id: '',
   });
   
-  
   const sendMessage = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setMessage((prev) => ({
       ...prev,
@@ -29,35 +28,45 @@ const ChatForm: React.FC = () => {
       method: 'post',
       body: data,
     });
+    
+    setMessage((prev) => ({
+      ...prev,
+      message: '',
+      author: '',
+    }));
   };
   
   return (
-    <form className="col-8 mx-auto" onSubmit={postMessage}>
-      <div className="form-group">
+    <form className="col-8 mx-auto row align-items-end mb-3" onSubmit={postMessage}>
+      <div className="col-3">
         <label htmlFor="author"></label>
         <input
           placeholder="Your name"
           type="text"
           name="author"
           id="author"
+          required
           value={message.author}
           onChange={sendMessage}
           className="form-control"
         />
       </div>
-      <div className="form-group">
+      <div className="col-5">
         <label htmlFor="message"></label>
         <input
           placeholder="Your message"
           type="text"
           name="message"
           id="message"
+          required
           value={message.message}
           onChange={sendMessage}
           className="form-control"
         />
       </div>
-      <button type="submit" className="btn btn-primary mt-2">Send</button>
+      <div className="col-4">
+        <button type="submit" className="btn btn-primary w-100">Submit</button>
+      </div>
     </form>
   );
 };
