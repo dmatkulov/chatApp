@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {PostMessage} from '../../types';
+import {request} from '../../request';
 
 const ChatForm: React.FC = () => {
   const [message, setMessage] = useState<PostMessage>({
@@ -24,9 +25,9 @@ const ChatForm: React.FC = () => {
     data.set('message', message.message);
     data.set('author', message.author);
     
-    await fetch(url, {
+    await request<PostMessage>(url, {
       method: 'post',
-      body: data,
+      body: data
     });
     
     setMessage((prev) => ({
